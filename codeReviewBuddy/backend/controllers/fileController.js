@@ -111,3 +111,33 @@ export const listFiles = async (req, res) => {
     res.json({ success: true, files: [] });
   }
 };
+
+// Add this to the bottom of your fileController.js
+export const deleteFile = async (req, res) => {
+  try {
+    const { fileName } = req.body;
+    const workspaceId = 'shared-workspace';
+
+    if (!fileName) {
+      return res.status(400).json({ error: 'Missing fileName' });
+    }
+
+    // Ensure the container exists before trying to delete from it
+    let container = getContainer(workspaceId);
+    if (!container) {
+      return res.status(404).json({ error: 'Workspace container not found' });
+    }
+
+    // Physically remove the file from the /workspace directory
+    await executeCommand(workspaceId, `rm -f "/workspace/${fileName}"`);
+
+    res.json({
+      success: true,
+      message: `File ${fileName} deleted successfully from container`
+    });
+
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).json({ error: error.message });
+  }
+};

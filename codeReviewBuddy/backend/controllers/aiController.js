@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import dotenv from 'dotenv';
 
@@ -107,33 +108,36 @@ Keep the response concise and actionable.`;
 export const chatWithAI = async (req, res) => {
   try {
     console.log('Chat request received:', req.body);
-    
-    // Use mock AI if DeepSeek is not available or configured
+
+    // 1. EXTRACT DATA FIRST (Fixes the 500 Error)
+    const { message, codeContext } = req.body;
+
+    // 2. Validate input immediately
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // 3. Handle Mock AI Logic
     if (USE_MOCK_AI) {
       console.log('Using mock AI for chat');
-      
       let mockResponse = "";
-      
-      if (message.toLowerCase().includes('error') || message.toLowerCase().includes('bug')) {
-        mockResponse = "I can help you debug! Common issues include:\n• Check for syntax errors\n• Verify variable names and scope\n• Look for missing imports or dependencies\n• Check data types and null values\n\nCan you share the specific error message?";
-      } else if (message.toLowerCase().includes('optimize') || message.toLowerCase().includes('performance')) {
-        mockResponse = "For performance optimization:\n• Use efficient algorithms and data structures\n• Minimize loops and nested operations\n• Cache frequently used data\n• Profile your code to identify bottlenecks\n\nWhat specific performance issues are you experiencing?";
+      const lowerMsg = message.toLowerCase(); // Now 'message' is safe to use
+
+      if (lowerMsg.includes('error') || lowerMsg.includes('bug')) {
+        mockResponse = "I can help you debug! Common issues include syntax errors or variable scope problems.";
+      } else if (lowerMsg.includes('optimize') || lowerMsg.includes('performance')) {
+        mockResponse = "For performance optimization, consider efficient data structures and minimizing loops.";
       } else {
-        mockResponse = "I'm here to help with your code! I can assist with:\n• Code reviews and suggestions\n• Debugging and error resolution\n• Best practices and optimization\n• Language-specific questions\n\n*Note: This is a mock AI. For advanced AI assistance, configure DeepSeek API.*";
+        mockResponse = "I'm here to help with your code! I can assist with reviews, debugging, and best practices. *Note: Mock AI active.*";
       }
-      
+
       return res.json({
         response: mockResponse,
         timestamp: new Date().toISOString()
       });
     }
-    
-    const { message, codeContext } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
-    
+
+    // 4. Handle Real Groq AI Logic
     let prompt = message;
     if (codeContext && codeContext.code) {
       prompt = `Context - Current code:
@@ -146,19 +150,18 @@ User question: ${message}`;
 
     const response = await callGroq([{ role: "user", content: prompt }], 800);
 
-    res.json({ 
+    res.json({
       response,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
     console.error('AI Chat Error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: error.message,
       details: error.response?.data || 'Unknown error'
     });
   }
 };
-
 export const suggestFix = async (req, res) => {
   try {
     if (USE_MOCK_AI) {

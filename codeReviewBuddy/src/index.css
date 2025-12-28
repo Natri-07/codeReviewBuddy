@@ -1,625 +1,1829 @@
+/* Update this section in the top part you just pasted */
+.main-content,
+.welcome-screen,
+.editor-container,
+.no-file-selected {
+  background: var(--bg-editor) !important;
+  color: var(--text-main) !important;
+}
+
+/* Add this to make the text in the middle turn black in Light Mode */
+.welcome-content h1,
+.welcome-content p,
+.feature {
+  color: var(--text-main) !important;
+}
+
+/* 1. Theme Variables */
+:root {
+  --bg-main: #1a1a1a;
+  --bg-sidebar: #252526;
+  --bg-editor: #1e1e1e;
+  --text-main: #ffffff;
+  --border-color: #444444;
+}
+
+.light-theme {
+  --bg-main: #ffffff;
+  --bg-sidebar: #f3f3f3;
+  --bg-editor: #ffffff;
+  --text-main: #000000;
+  --border-color: #cccccc;
+}
+
+/* 2. Core Layout Fixes */
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #1a1a1a;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background 0.3s;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-layout {
-  display: flex;
-  flex: 1;
-}
-
+/* Fix Side Parts clumping */
 .sidebar {
-  width: 250px;
-  background: #252526;
-  border-right: 1px solid #444;
+
+  flex-shrink: 0;
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.right-sidebar {
+  width: 350px !important;
+  flex-shrink: 0;
+  background: var(--bg-sidebar) !important;
+  border-left: 1px solid var(--border-color) !important;
 }
 
 .main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  background: var(--bg-editor) !important;
 }
+
+body {
+
+  margin: 0;
+
+  padding: 0;
+
+  background-color: #1a1a1a;
+
+  color: white;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  min-height: 100vh;
+
+}
+
+
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+
+
+.app-container {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+}
+
+
+
+.main-layout {
+
+  display: flex;
+
+  flex: 1;
+
+}
+
+
+
+.sidebar {
+
+  width: 250px;
+
+  background: #252526;
+
+  border-right: 1px solid #444;
+
+}
+
+
+
+.main-content {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
 
 .editor-section {
+
   flex: 1;
+
   display: flex;
+
   flex-direction: column;
+
 }
+
+
 
 .file-explorer {
+
   padding: 10px;
+
   height: 100%;
+
 }
+
+
 
 .explorer-header {
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   margin-bottom: 10px;
+
 }
+
+
 
 .header-actions {
+
   display: flex;
+
   gap: 8px;
+
   align-items: center;
+
 }
+
+
 
 .refresh-icon {
+
   cursor: pointer;
+
   color: #4caf50;
+
   font-size: 12px;
+
 }
+
+
 
 .refresh-icon:hover {
+
   color: #66bb6a;
+
 }
+
+
 
 .explorer-header h3 {
+
   margin: 0;
+
   font-size: 14px;
+
 }
 
+
+
 .add-icon {
+
   cursor: pointer;
+
   color: #fb0404;
+
 }
+
+
+
+/* --- MODERN FILE EXPLORER ITEMS (WITH RIGHT-ALIGNED TRASH) --- */
 
 .file-item {
   display: flex !important;
   align-items: center;
-  padding: 5px;
+  justify-content: flex-start;
+  /* Keeps filename on the left */
+  padding: 8px 12px !important;
   cursor: pointer;
-  border-radius: 3px;
-  margin-bottom: 2px;
-  background: red !important;
-  color: white !important;
-  min-height: 25px;
-  border: 2px solid yellow !important;
+  border-radius: 4px !important;
+  margin-bottom: 2px !important;
+  background: transparent !important;
+  color: var(--text-main) !important;
+  min-height: 32px !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease;
+  font-size: 13px !important;
+  width: 100%;
+  /* Ensures it fills the sidebar */
 }
 
+/* Hover and Active Styles */
 .file-item:hover {
-  background: #2a2d2e;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .file-item.active {
-  background: #fb0404;
+  background: rgba(251, 4, 4, 0.1) !important;
+  color: #fb0404 !important;
+  border: 1px solid #fb0404 !important;
 }
 
-.file-icon {
-  margin-right: 8px;
-  font-size: 12px;
-}
-
+/* --- THE TRASH ICON FIX --- */
 .delete-icon {
-  margin-left: auto;
+  margin-left: auto !important;
+  /* This pushes the icon to the far right */
+  color: inherit !important;
   opacity: 0;
-  font-size: 10px;
+  /* Hidden by default */
+  padding: 4px;
+  transition: opacity 0.2s, color 0.2s;
 }
 
+/* Show trash icon only when hovering over the file row */
 .file-item:hover .delete-icon {
-  opacity: 1;
+  opacity: 0.7;
 }
+
+.delete-icon:hover {
+  opacity: 1 !important;
+  color: #fb0404 !important;
+  /* Turns red when you target it */
+}
+
+/* Light Mode Adjustments */
+.light-theme .file-item {
+  color: #333333 !important;
+}
+
+.light-theme .file-item:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.light-theme .file-item.active {
+  background: #fdeaea !important;
+  color: #d32f2f !important;
+  border: 1px solid #f5c2c2 !important;
+}
+
+
 
 .editor-tabs {
+
   display: flex;
+
   background: #2d2d30;
+
   border-bottom: 1px solid #444;
+
 }
 
+
+
 .tab {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 8px 12px;
+
+  background: #2d2d30;
+
+  border-right: 1px solid #444;
+
+  cursor: pointer;
+
+  min-width: 120px;
+
+}
+
+
+
+.tab.active {
+
+  background: #1e1e1e;
+
+}
+
+
+
+.tab-name {
+
+  flex: 1;
+
+  font-size: 13px;
+
+}
+
+
+
+.close-icon {
+
+  margin-left: 8px;
+
+  font-size: 10px;
+
+  opacity: 0.7;
+
+}
+
+
+
+.close-icon:hover {
+
+  opacity: 1;
+
+}
+
+
+
+.controls {
+
+  padding: 10px;
+
+  background: #2d2d30;
+
+  border-bottom: 1px solid #444;
+
+}
+
+
+
+.controls button {
+
+  padding: 6px 12px;
+
+  background: #fb0404;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 3px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+}
+
+
+
+.controls button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+}
+
+
+
+.editor-container {
+
+  flex: 1;
+
+  background: #1e1e1e;
+
+}
+
+
+
+.no-file-selected {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 100%;
+
+  color: #888;
+
+}
+
+
+
+.bottom-panel {
+
+  height: 250px;
+
+  border-top: 1px solid #444;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.panel-tabs {
+
+  display: flex;
+
+  background: #2d2d30;
+
+  border-bottom: 1px solid #444;
+
+}
+
+
+
+.tab-btn {
+
+  padding: 8px 16px;
+
+  background: transparent;
+
+  border: none;
+
+  color: #ccc;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+}
+
+
+
+.tab-btn.active {
+
+  background: #1e1e1e;
+
+  color: white;
+
+}
+
+
+
+.panel-content {
+
+  flex: 1;
+
+  position: relative;
+
+}
+
+
+
+.output-container {
+
+  height: 100%;
+
+  background: #2a2a2a;
+
+  padding: 10px;
+
+  overflow-y: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.input-section {
+
+  margin-bottom: 15px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #444;
+
+}
+
+
+
+.input-section label {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #4caf50;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+}
+
+
+
+.input-box {
+
+  width: 100%;
+
+  background: #1a1a1a;
+
+  border: 1px solid #444;
+
+  border-radius: 4px;
+
+  padding: 8px;
+
+  color: white;
+
+  font-family: 'Consolas', 'Monaco', monospace;
+
+  font-size: 12px;
+
+  resize: vertical;
+
+}
+
+
+
+.input-box:focus {
+
+  outline: none;
+
+  border-color: #4caf50;
+
+}
+
+
+
+.output-container h3 {
+
+  margin: 0 0 10px 0;
+
+  color: #fb0404;
+
+  font-size: 14px;
+
+}
+
+
+
+.output-container pre {
+
+  background: #1a1a1a;
+
+  padding: 10px;
+
+  border-radius: 3px;
+
+  overflow-x: auto;
+
+  white-space: pre-wrap;
+
+  margin: 0;
+
+  font-size: 12px;
+
+  flex: 1;
+
+}
+
+
+
+.terminal-container {
+
+  height: 100%;
+
+  background: #1a1a1a;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.terminal-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 8px 12px;
+
+  background: #2d2d30;
+
+  border-bottom: 1px solid #444;
+
+  font-size: 12px;
+
+}
+
+
+
+.status.connected {
+
+  color: #4caf50;
+
+}
+
+
+
+.status.disconnected {
+
+  color: #f44336;
+
+}
+
+
+
+.terminal-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+
+
+.clear-btn {
+
+  padding: 2px 6px;
+
+  background: #444;
+
+  border: none;
+
+  color: white;
+
+  border-radius: 2px;
+
+  cursor: pointer;
+
+  font-size: 10px;
+
+}
+
+
+
+.clear-btn:hover {
+
+  background: #555;
+
+}
+
+
+
+.terminal-output {
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 8px;
+
+  font-family: 'Consolas', 'Monaco', monospace;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+}
+
+
+
+.terminal-output pre {
+
+  margin: 0;
+
+  white-space: pre-wrap;
+
+  word-wrap: break-word;
+
+}
+
+
+
+.terminal-input-container {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 8px;
+
+  border-top: 1px solid #444;
+
+  background: #2a2a2a;
+
+}
+
+
+
+.prompt {
+
+  color: #4caf50;
+
+  font-family: 'Consolas', 'Monaco', monospace;
+
+  font-size: 12px;
+
+  margin-right: 4px;
+
+}
+
+
+
+.terminal-input {
+
+  flex: 1;
+
+  background: transparent;
+
+  border: none;
+
+  color: white;
+
+  font-family: 'Consolas', 'Monaco', monospace;
+
+  font-size: 12px;
+
+  outline: none;
+
+}
+
+
+
+.terminal-input:disabled {
+
+  opacity: 0.5;
+
+}
+
+
+
+.status-bar {
+
+  height: 24px;
+
+  background: #007acc;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 12px;
+
+  font-size: 12px;
+
+  border-top: 1px solid #444;
+
+}
+
+
+
+.status-left,
+
+.status-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+}
+
+
+
+.status-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+}
+
+
+
+.status-item.loading {
+
+  color: #ffeb3b;
+
+}
+
+
+
+.tab-btn:hover {
+
+  background: #3c3c3c;
+
+}
+
+
+
+.controls button:hover {
+
+  background: #e60000;
+
+}
+
+
+
+.file-item:hover .delete-icon {
+
+  opacity: 1;
+
+  color: #f44336;
+
+}
+
+
+
+.close-icon:hover {
+
+  color: #f44336;
+
+}
+
+
+
+.add-icon:hover {
+
+  color: #ff6b6b;
+
+}
+
+
+
+.no-files {
+
+  padding: 10px;
+
+  color: #888;
+
+  font-size: 12px;
+
+  text-align: center;
+
+}
+
+
+
+.welcome-screen {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 100%;
+
+  background: #1e1e1e;
+
+}
+
+
+
+.welcome-content {
+
+  text-align: center;
+
+  max-width: 600px;
+
+  padding: 40px;
+
+}
+
+
+
+.welcome-content h1 {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+
+  color: #fb0404;
+
+}
+
+
+
+.welcome-icon {
+
+  font-size: 32px;
+
+}
+
+
+
+.features {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+
+  margin: 32px 0;
+
+}
+
+
+
+.feature {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  background: #2a2a2a;
+
+  border-radius: 8px;
+
+  color: #ccc;
+
+}
+
+
+
+.quick-start h3 {
+
+  margin-bottom: 16px;
+
+  color: #fb0404;
+
+}
+
+
+
+.sample-files {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+}
+
+
+
+.sample-btn {
+
+  padding: 12px 16px;
+
+  background: #2a2a2a;
+
+  border: 1px solid #444;
+
+  color: white;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+
+}
+
+
+
+.sample-btn:hover {
+
+  background: #fb0404;
+
+  border-color: #fb0404;
+
+}
+
+
+
+.right-sidebar {
+
+  width: 350px;
+
+  background: #252526;
+
+  border-left: 1px solid #444;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.ai-chat {
+
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.chat-header {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 10px;
+
+  border-bottom: 1px solid #444;
+
+  gap: 8px;
+
+}
+
+
+
+.chat-header h3 {
+
+  margin: 0;
+
+  font-size: 14px;
+
+  flex: 1;
+
+}
+
+
+
+.chat-icon {
+
+  color: #fb0404;
+
+}
+
+
+
+.review-btn {
+
+  padding: 4px 8px;
+
+  background: #fb0404;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 3px;
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+}
+
+
+
+.review-btn:disabled {
+
+  opacity: 0.6;
+
+}
+
+
+
+.chat-messages {
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding: 10px;
+
+  max-height: calc(100vh - 300px);
+
+  position: relative;
+
+}
+
+
+
+.message {
+
+  display: flex;
+
+  margin-bottom: 15px;
+
+  gap: 8px;
+
+}
+
+
+
+.message-icon {
+
+  width: 24px;
+
+  height: 24px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 12px;
+
+  flex-shrink: 0;
+
+}
+
+
+
+.message.user .message-icon {
+
+  background: #fb0404;
+
+}
+
+
+
+.message.ai .message-icon {
+
+  background: #0078d4;
+
+}
+
+
+
+.message-content {
+
+  flex: 1;
+
+  background: #2a2a2a;
+
+  padding: 8px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+}
+
+
+
+.message-content pre {
+
+  margin: 0;
+
+  white-space: pre-wrap;
+
+  font-family: inherit;
+
+}
+
+
+
+.message.loading .message-content {
+
+  font-style: italic;
+
+  opacity: 0.7;
+
+}
+
+
+
+.chat-input {
+
+  display: flex;
+
+  padding: 10px;
+
+  border-top: 1px solid #444;
+
+  gap: 8px;
+
+}
+
+
+
+.chat-input textarea {
+
+  flex: 1;
+
+  background: #2a2a2a;
+
+  border: 1px solid #444;
+
+  border-radius: 4px;
+
+  padding: 8px;
+
+  color: white;
+
+  font-size: 12px;
+
+  resize: none;
+
+  height: 60px;
+
+}
+
+
+
+.chat-input button {
+
+  background: #fb0404;
+
+  border: none;
+
+  border-radius: 4px;
+
+  color: white;
+
+  padding: 8px 12px;
+
+  cursor: pointer;
+
+}
+
+
+
+.chat-input button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+}
+
+/* --- TEXT THEME MAPPING --- */
+
+/* 1. Main Welcome Screen Texts */
+.welcome-content h1,
+.welcome-content p,
+.quick-start h3 {
+  color: var(--text-main) !important;
+}
+
+/* 2. Feature Boxes (Integrated Terminal, AI Review, etc.) */
+.feature,
+.feature h3,
+.feature p {
+  color: var(--text-main) !important;
+}
+
+/* 3. Output and Terminal Headers */
+.output-container h3,
+.input-section label {
+  color: var(--text-main) !important;
+}
+
+/* 4. The Logo/Title color tweak */
+/* In light mode, we want the red to be a bit darker so it stands out on white */
+.light-theme .welcome-content h1 {
+  color: var(--accent-red) !important;
+}
+
+/* 5. Status Bar Text (Bottom Left) */
+.status-bar {
+  color: var(--text-main) !important;
+}
+
+/* --- SPECIFIC LIGHT MODE TEXT FIXES --- */
+
+/* 1. Target the Welcome Screen Title and Text */
+.light-theme .welcome-content h1,
+.light-theme .welcome-content p,
+.light-theme .quick-start h3,
+.light-theme .feature h3,
+.light-theme .feature p {
+  color: #000000 !important;
+}
+
+/* 2. Target the Output and Terminal Area */
+.light-theme .output-container h3,
+.light-theme .input-section label,
+.light-theme .output-container pre,
+.light-theme .prompt {
+  color: #000000 !important;
+}
+
+/* 3. Keep the Logo Red but readable */
+.light-theme .welcome-content h1 {
+  color: #fb0404 !important;
+}
+
+/* 4. Feature Icons and Text inside boxes */
+.light-theme .feature {
+  color: #000000 !important;
+  background-color: #f0f0f0 !important;
+  border: 1px solid #cccccc !important;
+}
+
+/* 5. Program Input Textarea text */
+.light-theme .input-box {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+/* --- LIGHT MODE SIDEBAR VISIBILITY --- */
+
+/* 1. Make Sidebar Titles Black */
+.light-theme .sidebar h3,
+.light-theme .right-sidebar h3,
+.light-theme .explorer-header h3,
+.light-theme .chat-header h3 {
+  color: #000000 !important;
+}
+
+/* 2. Fix the AI Assistant "Ask about your code" area */
+.light-theme .chat-messages,
+.light-theme .ai-chat {
+  background: var(--bg-sidebar) !important;
+}
+
+.light-theme .chat-input textarea {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #cccccc !important;
+}
+
+/* 3. Soften the Red File Boxes in Light Mode so they aren't so harsh */
+.light-theme .file-item {
+  background: #fdeaea !important;
+  /* Soft red background */
+  color: #d32f2f !important;
+  /* Dark red text */
+  border: 1px solid #f5c2c2 !important;
+}
+
+.light-theme .file-item:hover {
+  background: #f9d7d7 !important;
+}
+
+/* 4. Fix the bottom Status Bar (No file selected / AI Ready) */
+.light-theme .status-bar,
+.light-theme .status-left,
+.light-theme .status-right {
+  background: #f3f3f3 !important;
+  color: #666666 !important;
+  border-top: 1px solid #cccccc !important;
+}
+
+/* --- LIGHT MODE FINAL CONTRAST FIXES --- */
+
+/* 1. Change the "Hello World" Quick Start buttons */
+.light-theme .sample-btn {
+  background: #f3f3f3 !important;
+  color: #000000 !important;
+  border: 1px solid #cccccc !important;
+}
+
+.light-theme .sample-btn:hover {
+  background: #e0e0e0 !important;
+}
+
+/* 2. Fix the Bottom Panel (Output/Terminal area) */
+.light-theme .bottom-panel,
+.light-theme .panel-tabs,
+.light-theme .output-container {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-top: 1px solid #cccccc !important;
+}
+
+/* 3. Fix the Output and Terminal Tab Buttons */
+.light-theme .tab-btn {
+  color: #666666 !important;
+}
+
+.light-theme .tab-btn.active {
+  background: #f3f3f3 !important;
+  color: #000000 !important;
+  border-bottom: 2px solid #fb0404 !important;
+}
+
+/* 4. Fix labels and output text visibility */
+.light-theme .output-container h3,
+.light-theme .output-container pre,
+.light-theme .input-section label {
+  color: #000000 !important;
+}
+
+/* 5. Feature Card Icons (making them stand out) */
+.light-theme .feature {
+  background: #fdfdfd !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* --- LIGHT THEME: TOP CONTROLS & BOTTOM OUTPUT --- */
+
+/* 1. Fix the top bar (where Run Code and Dark buttons are) */
+.light-theme .controls {
+  background: #f3f3f3 !important;
+  border-bottom: 1px solid #cccccc !important;
+}
+
+/* 2. Fix the Bottom Panel background and borders */
+.light-theme .bottom-panel {
+  background: #ffffff !important;
+  border-top: 1px solid #cccccc !important;
+}
+
+/* 3. Fix the Output/Terminal tab bar */
+.light-theme .panel-tabs {
+  background: #f3f3f3 !important;
+  border-bottom: 1px solid #cccccc !important;
+}
+
+/* 4. Fix the white text on white background in Output */
+.light-theme .output-container {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.light-theme .output-container pre {
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  border: 1px solid #eeeeee !important;
+}
+
+/* 5. Fix the Quick Start buttons (Python Hello World, etc.) */
+.light-theme .sample-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #cccccc !important;
+}
+
+.light-theme .sample-btn:hover {
+  background: #fb0404 !important;
+  color: #ffffff !important;
+}
+
+.theme-toggle-btn {
+  /* This pushes the button to the far right of the .controls bar */
+  margin-left: auto !important;
+
+  padding: 6px 12px;
+  cursor: pointer;
+  background: var(--bg-main);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  background: #2d2d30;
-  border-right: 1px solid #444;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Ensure the parent container is set to flex */
+.controls {
+  display: flex !important;
+  align-items: center;
+  padding: 10px;
+  background: var(--bg-tabs);
+  border-bottom: 1px solid var(--border-color);
+  gap: 10px;
+}
+
+/* --- HOME BUTTON STYLING --- */
+.home-btn {
+  padding: 6px 15px;
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px;
   cursor: pointer;
-  min-width: 120px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.home-btn:hover {
+  background: var(--bg-panel) !important;
+  border-color: var(--accent-red) !important;
+  color: var(--accent-red) !important;
+}
+
+/* Ensure the light theme keeps the home button readable */
+.light-theme .home-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* --- TAB & EXPLORER TEXT VISIBILITY --- */
+
+/* Fixes the Tab names (like a.py) at the top of the editor */
+.tab {
+  color: var(--text-main) !important;
 }
 
 .tab.active {
-  background: #1e1e1e;
+  background: var(--bg-editor) !important;
+  border-bottom: 2px solid var(--accent-red) !important;
 }
 
-.tab-name {
-  flex: 1;
-  font-size: 13px;
+/* Ensure the file name in the explorer is white in Dark and Black in Light */
+.file-item span {
+  color: inherit !important;
 }
 
-.close-icon {
-  margin-left: 8px;
-  font-size: 10px;
-  opacity: 0.7;
-}
-
-.close-icon:hover {
-  opacity: 1;
-}
-
-.controls {
-  padding: 10px;
-  background: #2d2d30;
-  border-bottom: 1px solid #444;
-}
-
-.controls button {
+/* --- HOME BUTTON STYLING --- */
+.home-btn {
   padding: 6px 12px;
-  background: #fb0404;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.controls button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.editor-container {
-  flex: 1;
-  background: #1e1e1e;
-}
-
-.no-file-selected {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #888;
-}
-
-.bottom-panel {
-  height: 250px;
-  border-top: 1px solid #444;
-  display: flex;
-  flex-direction: column;
-}
-
-.panel-tabs {
-  display: flex;
-  background: #2d2d30;
-  border-bottom: 1px solid #444;
-}
-
-.tab-btn {
-  padding: 8px 16px;
-  background: transparent;
-  border: none;
-  color: #ccc;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.tab-btn.active {
-  background: #1e1e1e;
-  color: white;
-}
-
-.panel-content {
-  flex: 1;
-  position: relative;
-}
-
-.output-container {
-  height: 100%;
-  background: #2a2a2a;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-section {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #444;
-}
-
-.input-section label {
-  display: block;
-  margin-bottom: 5px;
-  color: #4caf50;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.input-box {
-  width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #444;
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
   border-radius: 4px;
-  padding: 8px;
-  color: white;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 12px;
-  resize: vertical;
-}
-
-.input-box:focus {
-  outline: none;
-  border-color: #4caf50;
-}
-
-.output-container h3 {
-  margin: 0 0 10px 0;
-  color: #fb0404;
-  font-size: 14px;
-}
-
-.output-container pre {
-  background: #1a1a1a;
-  padding: 10px;
-  border-radius: 3px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  margin: 0;
-  font-size: 12px;
-  flex: 1;
-}
-
-.terminal-container {
-  height: 100%;
-  background: #1a1a1a;
-  display: flex;
-  flex-direction: column;
-}
-
-.terminal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background: #2d2d30;
-  border-bottom: 1px solid #444;
-  font-size: 12px;
-}
-
-.status.connected {
-  color: #4caf50;
-}
-
-.status.disconnected {
-  color: #f44336;
-}
-
-.terminal-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.clear-btn {
-  padding: 2px 6px;
-  background: #444;
-  border: none;
-  color: white;
-  border-radius: 2px;
   cursor: pointer;
-  font-size: 10px;
-}
-
-.clear-btn:hover {
-  background: #555;
-}
-
-.terminal-output {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.terminal-output pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.terminal-input-container {
+  font-size: 13px;
   display: flex;
   align-items: center;
-  padding: 8px;
-  border-top: 1px solid #444;
-  background: #2a2a2a;
-}
-
-.prompt {
-  color: #4caf50;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 12px;
-  margin-right: 4px;
-}
-
-.terminal-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: white;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 12px;
-  outline: none;
-}
-
-.terminal-input:disabled {
-  opacity: 0.5;
-}
-
-.status-bar {
-  height: 24px;
-  background: #007acc;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  font-size: 12px;
-  border-top: 1px solid #444;
-}
-
-.status-left,
-.status-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.status-item.loading {
-  color: #ffeb3b;
-}
-
-.tab-btn:hover {
-  background: #3c3c3c;
-}
-
-.controls button:hover {
-  background: #e60000;
-}
-
-.file-item:hover .delete-icon {
-  opacity: 1;
-  color: #f44336;
-}
-
-.close-icon:hover {
-  color: #f44336;
-}
-
-.add-icon:hover {
-  color: #ff6b6b;
-}
-
-.no-files {
-  padding: 10px;
-  color: #888;
-  font-size: 12px;
-  text-align: center;
-}
-
-.welcome-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background: #1e1e1e;
-}
-
-.welcome-content {
-  text-align: center;
-  max-width: 600px;
-  padding: 40px;
-}
-
-.welcome-content h1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  color: #fb0404;
-}
-
-.welcome-icon {
-  font-size: 32px;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin: 32px 0;
-}
-
-.feature {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: #2a2a2a;
-  border-radius: 8px;
-  color: #ccc;
-}
-
-.quick-start h3 {
-  margin-bottom: 16px;
-  color: #fb0404;
-}
-
-.sample-files {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sample-btn {
-  padding: 12px 16px;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+  gap: 6px;
   transition: all 0.2s;
 }
 
-.sample-btn:hover {
-  background: #fb0404;
-  border-color: #fb0404;
+.home-btn:hover {
+  border-color: var(--accent-red) !important;
+  color: var(--accent-red) !important;
 }
 
-.right-sidebar {
-  width: 350px;
-  background: #252526;
-  border-left: 1px solid #444;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+/* --- FORCING TEXT VISIBILITY IN BOTH MODES --- */
+
+/* 1. Fix the Explorer File Names */
+.file-item,
+.file-item span,
+.file-item .file-icon {
+  color: var(--text-main) !important;
 }
 
-.ai-chat {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+/* 2. Fix the Tabs at the top (a.py, etc.) */
+.tab .tab-name {
+  color: var(--text-main) !important;
 }
 
-.chat-header {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #444;
-  gap: 8px;
+/* 3. High Visibility for the Active Tab */
+.tab.active .tab-name {
+  color: var(--text-main) !important;
+  font-weight: bold !important;
 }
 
+/* 4. Fix the Sidebar Headers (Explorer, AI Assistant) */
+.sidebar h3,
+.explorer-header h3,
+.right-sidebar h3,
 .chat-header h3 {
-  margin: 0;
-  font-size: 14px;
-  flex: 1;
+  color: var(--text-main) !important;
 }
 
-.chat-icon {
-  color: #fb0404;
+/* 5. Ensure the Home button text is visible */
+.home-btn {
+  color: var(--text-main) !important;
 }
 
-.review-btn {
-  padding: 4px 8px;
-  background: #fb0404;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* --- TAB VISIBILITY FIX --- */
+
+/* Targets the filename text in the top tabs */
+.tab,
+.tab-name {
+  color: var(--text-main) !important;
+  opacity: 1 !important;
 }
 
-.review-btn:disabled {
-  opacity: 0.6;
+/* Specific fix for the 'blinded' text in dark mode */
+.tab.active {
+  background: var(--bg-editor) !important;
+  border-bottom: 2px solid #fb0404 !important;
 }
 
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 10px;
-  max-height: calc(100vh - 300px);
-  position: relative;
-}
-
-.message {
-  display: flex;
-  margin-bottom: 15px;
-  gap: 8px;
-}
-
-.message-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Ensure the 'X' button in the tab is also visible */
+.close-icon {
+  color: var(--text-main) !important;
+  margin-left: 8px;
   font-size: 12px;
+}
+
+/* --- RESIZABLE SIDEBAR STYLING --- */
+
+/* 1. Ensure the container allows children to change size */
+.main-layout {
+  display: flex !important;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 30px);
+  /* Adjust for status bar height */
+  overflow: hidden;
+}
+
+/* 2. The Sidebar needs to stop using a fixed width */
+.sidebar {
   flex-shrink: 0;
+  /* Prevents it from being crushed */
+  overflow-x: hidden;
+  background: var(--bg-sidebar);
 }
 
-.message.user .message-icon {
-  background: #fb0404;
+/* 3. The Resizer Handle (The Invisible Draggable Area) */
+.resizer {
+  width: 6px;
+  /* Slightly wider hit area for the mouse */
+  cursor: col-resize;
+  background: transparent;
+  z-index: 100;
+  transition: background 0.2s;
+  margin-left: -3px;
+  /* Centers the hit area over the border */
+  margin-right: -3px;
 }
 
-.message.ai .message-icon {
-  background: #0078d4;
+/* Show a red line when the user hovers or drags */
+.resizer:hover,
+.resizer:active {
+  background: var(--accent-red) !important;
+  box-shadow: 0 0 5px var(--accent-red);
 }
 
-.message-content {
+/* 4. Ensure Main Content fills the remaining space */
+.main-content {
+  flex-grow: 1;
+  min-width: 0;
+  /* Prevents content from pushing the sidebar out */
+}
+
+/* --- RESIZER FUNCTIONALITY PATCH --- */
+
+/* 1. Remove the 'lock' on sidebar width */
+.sidebar {
+  width: unset;
+  /* Allow the React inline style to take over */
+  flex-shrink: 0;
+  min-width: 100px;
+  max-width: 600px;
+  border-right: 1px solid var(--border-color);
+}
+
+/* 2. Style the Draggable Handle */
+.resizer {
+  width: 8px;
+  /* Hit area for the mouse */
+  cursor: col-resize;
+  background: transparent;
+  z-index: 1000;
+  /* Ensure it stays above the editor */
+  margin-left: -4px;
+  /* Center the hit area over the border */
+  margin-right: -4px;
+  transition: background 0.2s;
+}
+
+/* 3. Visual feedback when hovering/dragging */
+.resizer:hover,
+.resizer:active {
+  background: var(--accent-red) !important;
+}
+
+/* 4. Ensure the middle section fills the rest of the space */
+/* --- CLEAN LAYOUT REPAIR --- */
+
+/* 1. Reset the Main Layout */
+.main-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100vw;
+  height: calc(100vh - 24px);
+  /* Subtract Status Bar height */
+  overflow: hidden;
+}
+
+/* 2. Unlock Left Sidebar */
+.sidebar {
+  flex-shrink: 0;
+  min-width: 150px;
+  max-width: 500px;
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-color) !important;
+  overflow-x: hidden;
+  /* REMOVED: width: ... !important; */
+}
+
+/* 3. Unlock Right Sidebar */
+.right-sidebar {
+  flex-shrink: 0;
+  min-width: 200px;
+  max-width: 600px;
+  background: var(--bg-sidebar) !important;
+  border-left: 1px solid var(--border-color) !important;
+  overflow-x: hidden;
+  /* REMOVED: width: ... !important; */
+}
+
+/* 4. Unlock Bottom Panel */
+.bottom-panel {
+  flex-shrink: 0;
+  min-height: 100px;
+  max-height: 500px;
+  background: var(--bg-main) !important;
+  border-top: 1px solid var(--border-color) !important;
+  /* REMOVED: height: ... !important; */
+}
+
+/* 5. Center Content Must Be Flexible */
+.main-content {
   flex: 1;
-  background: #2a2a2a;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 12px;
-}
-
-.message-content pre {
-  margin: 0;
-  white-space: pre-wrap;
-  font-family: inherit;
-}
-
-.message.loading .message-content {
-  font-style: italic;
-  opacity: 0.7;
-}
-
-.chat-input {
+  /* This is what allows sidebars to push/pull the center */
   display: flex;
-  padding: 10px;
-  border-top: 1px solid #444;
-  gap: 8px;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--bg-editor) !important;
 }
 
-.chat-input textarea {
-  flex: 1;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 8px;
-  color: white;
-  font-size: 12px;
-  resize: none;
-  height: 60px;
+/* Make the resizer visible when dragging */
+.resizer:hover, .resizer-h:hover, .resizer:active, .resizer-h:active {
+  background: #fb0404 !important;
+}
+/* RESIZER HANDLES */
+.resizer,
+.resizer-right {
+  width: 8px;
+  /* Wider area to grab */
+  cursor: col-resize;
+  background: transparent;
+  z-index: 1000;
+  margin: 0 -4px;
+  /* Centers hit area over the border line */
+  transition: background 0.2s;
 }
 
-.chat-input button {
-  background: #fb0404;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  padding: 8px 12px;
-  cursor: pointer;
+.resizer-h {
+  height: 8px;
+  cursor: row-resize;
+  background: transparent;
+  z-index: 1000;
+  margin: -4px 0;
+  width: 100%;
 }
 
-.chat-input button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Visual feedback when active */
+.resizer:hover,
+.resizer-right:hover,
+.resizer-h:hover,
+.resizer:active,
+.resizer-right:active,
+.resizer-h:active {
+  background: #fb0404 !important;
+  /* The red line shows up only when dragging */
 }
